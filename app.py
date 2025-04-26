@@ -52,7 +52,7 @@ def handle_message(event):
         Mistral(api_key=MISTRAL_API_KEY) as mistral,
         ApiClient(configuration) as api_client
     ):
-        res = mistral.chat.complete(model="mistral-small-latest", messages=[
+        res = mistral.chat.complete(model="mistral-large-latest", messages=[
             {
                 "content": event.message.text,
                 "role": "user",
@@ -63,7 +63,7 @@ def handle_message(event):
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
                 reply_token=event.reply_token,
-                messages=[TextMessage(text=res)]
+                messages=[TextMessage(text=res.choices[0].message.content)]
             )
         )
 
