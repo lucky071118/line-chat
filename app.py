@@ -12,7 +12,7 @@ from linebot.v3.webhooks import (
     MessageEvent,
     TextMessageContent
 )
-import requests
+from mistralai import Mistral
 import os
 
 app = Flask(__name__)
