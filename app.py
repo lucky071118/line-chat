@@ -23,6 +23,11 @@ MISTRAL_API_KEY = os.environ['MISTRAL_API_KEY']
 configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
+
+@app.route("/", methods=["GET", "HEAD"])
+def health_check():
+    return "OK", 200
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -69,4 +74,4 @@ def handle_message(event):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
