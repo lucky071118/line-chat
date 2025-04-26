@@ -48,30 +48,22 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
-    """
-    response = requests.post(
-        "https://api.mistral.ai/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {MISTRAL_API_KEY}",
-            "Content-Type": "application/json"
-        },
-        json={
-            "model": "mistral-tiny",  # Or use "mistral-large-latest"
-            "messages": [
-                {"role": "user", "content": user_text}
-            ]
-        }
-    )
-    
-    reply_text = response.json()['choices'][0]['message']['content']
-    """
-    with ApiClient(configuration) as api_client:
-        
+    with (
+        Mistral(api_key=MISTRAL_API_KEY) as mistral,
+        ApiClient(configuration) as api_client
+    ):
+        res = mistral.chat.complete(model="mistral-small-latest", messages=[
+            {
+                "content": event.message.text,
+                "role": "user",
+            },
+        ])
+
         line_bot_api = MessagingApi(api_client)
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
                 reply_token=event.reply_token,
-                messages=[TextMessage(text='test')]
+                messages=[TextMessage(text=res)]
             )
         )
 
