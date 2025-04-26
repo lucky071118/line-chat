@@ -48,6 +48,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
+    """
     response = requests.post(
         "https://api.mistral.ai/v1/chat/completions",
         headers={
@@ -61,14 +62,16 @@ def handle_message(event):
             ]
         }
     )
+    
     reply_text = response.json()['choices'][0]['message']['content']
+    """
     with ApiClient(configuration) as api_client:
         
         line_bot_api = MessagingApi(api_client)
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
                 reply_token=event.reply_token,
-                messages=[TextMessage(text=reply_text)]
+                messages=[TextMessage(text='test')]
             )
         )
 
