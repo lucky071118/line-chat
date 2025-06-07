@@ -1,3 +1,4 @@
 Flask
-mistralai
+mistralai[agents]
 line-bot-sdk
+black
